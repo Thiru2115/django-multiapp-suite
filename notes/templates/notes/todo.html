@@ -5,53 +5,379 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My ToDo List - Notes App</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+        
+        .navbar-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 24px;
+            color: white !important;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-left: 8px;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .welcome-text {
+            color: white;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+        
+        .container-main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 15px;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        
+        .page-subtitle {
+            color: #718096;
+            font-size: 16px;
+        }
+        
+        .add-todo-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .input-group-custom {
+            position: relative;
+        }
+        
+        .input-group-custom input {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 120px 14px 20px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .input-group-custom input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        .input-group-custom button {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group-custom button:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .todo-list {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            animation: fadeIn 0.5s ease-out 0.1s both;
+        }
+        
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: #f8fafc;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .todo-item:hover {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+        }
+        
+        .todo-item.completed {
+            background: #f0fdf4;
+            border-color: #86efac;
+        }
+        
+        .todo-text {
+            flex: 1;
+            font-size: 15px;
+            color: #2d3748;
+            font-weight: 500;
+            word-wrap: break-word;
+            padding: 0 15px;
+        }
+        
+        .todo-item.completed .todo-text {
+            color: #6b7280;
+        }
+        
+        .btn-todo {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            margin-left: 8px;
+        }
+        
+        .btn-done {
+            background: #e0e7ff;
+            color: #667eea;
+        }
+        
+        .btn-done:hover {
+            background: #c7d2fe;
+            transform: translateY(-2px);
+        }
+        
+        .btn-undo {
+            background: #d1fae5;
+            color: #10b981;
+        }
+        
+        .btn-undo:hover {
+            background: #a7f3d0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-delete {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+        
+        .btn-delete:hover {
+            background: #fecaca;
+            transform: translateY(-2px);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a0aec0;
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-state h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 26px;
+            }
+            
+            .todo-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .todo-text {
+                padding: 0 0 12px 0;
+                width: 100%;
+            }
+            
+            .todo-actions {
+                display: flex;
+                gap: 8px;
+                width: 100%;
+            }
+            
+            .btn-todo {
+                flex: 1;
+                margin-left: 0;
+            }
+            
+            .welcome-text {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container-main {
+                padding: 20px 10px;
+            }
+            
+            .add-todo-card, .todo-list {
+                padding: 20px;
+            }
+            
+            .input-group-custom input {
+                padding: 12px 110px 12px 16px;
+                font-size: 14px;
+            }
+            
+            .input-group-custom button {
+                padding: 8px 18px;
+                font-size: 14px;
+            }
+            
+            .nav-btn {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Notes App</a>
-            <div class="d-flex">
-                <span class="navbar-text text-white me-3">Welcome, {{ user.username }}</span>
-                <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-sm me-2">Dashboard</a>
-                <a href="/notes/logout/" class="btn btn-outline-light btn-sm">Logout</a>
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid px-4">
+            <span class="navbar-brand">
+                <i class="bi bi-check2-square"></i> ToDo
+            </span>
+            <div class="d-flex align-items-center">
+                <span class="welcome-text">Hi, {{ user.username }}!</span>
+                <a href="{% url 'dashboard' %}" class="btn nav-btn btn-sm">
+                    <i class="bi bi-journal-text"></i> Dashboard
+                </a>
+                <a href="/notes/logout/" class="btn nav-btn btn-sm">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h2>My ToDo List</h2>
-        <form method="POST" class="mb-4">
-            {% csrf_token %}
-            <div class="input-group">
-                <input type="text" class="form-control" name="title" placeholder="Add a new task" required>
-                <button class="btn btn-primary" type="submit">Add Task</button>
-            </div>
-        </form>
+    <div class="container-main">
+        <div class="page-header">
+            <h1 class="page-title">My ToDo List</h1>
+            <p class="page-subtitle">Stay organized and productive</p>
+        </div>
 
-        <ul class="list-group">
+        <div class="add-todo-card">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-group-custom">
+                    <input type="text" name="title" placeholder="What do you need to do?" required autofocus>
+                    <button type="submit">
+                        <i class="bi bi-plus-lg"></i> Add
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {% if todos %}
+        <div class="todo-list">
             {% for todo in todos %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
+            <div class="todo-item {% if todo.is_finished %}completed{% endif %}">
+                <div class="todo-text">
                     {% if todo.is_finished %}
-                    <del class="text-muted">{{ todo.title }}</del>
+                    <del>{{ todo.title }}</del>
                     {% else %}
                     {{ todo.title }}
                     {% endif %}
                 </div>
-                <div>
-                    <a href="{% url 'update_todo' todo.id %}" class="btn btn-sm {% if todo.is_finished %}btn-success{% else %}btn-secondary{% endif %}">
-                        {% if todo.is_finished %}Undo{% else %}Done{% endif %}
+                <div class="todo-actions">
+                    <a href="{% url 'update_todo' todo.id %}" class="btn btn-todo {% if todo.is_finished %}btn-undo{% else %}btn-done{% endif %}">
+                        {% if todo.is_finished %}
+                        <i class="bi bi-arrow-counterclockwise"></i> Undo
+                        {% else %}
+                        <i class="bi bi-check-lg"></i> Done
+                        {% endif %}
                     </a>
-                    <a href="{% url 'delete_todo' todo.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    <a href="{% url 'delete_todo' todo.id %}" class="btn btn-todo btn-delete">
+                        <i class="bi bi-trash"></i> Delete
+                    </a>
                 </div>
-            </li>
-            {% empty %}
-            <li class="list-group-item text-muted">No tasks yet! Add your first task above.</li>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
+        {% else %}
+        <div class="todo-list">
+            <div class="empty-state">
+                <i class="bi bi-clipboard-check"></i>
+                <h3>No tasks yet</h3>
+                <p>Add your first task above to get started!</p>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

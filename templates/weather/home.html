@@ -1,51 +1,366 @@
-{% load static %}
-
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .weather-container {
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .search-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            animation: slideDown 0.5s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .app-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .app-title h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .app-title p {
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .search-form {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 16px 130px 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-btn {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 28px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .weather-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .location-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .city-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .country-name {
+            color: #718096;
+            font-size: 16px;
+        }
+        
+        .main-weather {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 16px;
+        }
+        
+        .weather-icon {
+            font-size: 80px;
+            margin-bottom: 10px;
+        }
+        
+        .temperature {
+            font-size: 56px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .description {
+            font-size: 20px;
+            color: #667eea;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        
+        .feels-like {
+            color: #718096;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .detail-item {
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .detail-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .detail-label {
+            font-size: 13px;
+            color: #718096;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .detail-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        
+        .error-message {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: shake 0.5s ease-out;
+            border-left: 4px solid #ef4444;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .error-icon {
+            font-size: 48px;
+            color: #ef4444;
+            margin-bottom: 15px;
+        }
+        
+        .error-text {
+            color: #ef4444;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        @media (max-width: 576px) {
+            .search-card {
+                padding: 20px;
+            }
+            
+            .weather-card {
+                padding: 25px;
+            }
+            
+            .app-title h1 {
+                font-size: 26px;
+            }
+            
+            .city-name {
+                font-size: 26px;
+            }
+            
+            .temperature {
+                font-size: 48px;
+            }
+            
+            .weather-icon {
+                font-size: 64px;
+            }
+            
+            .weather-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-input {
+                padding: 14px 120px 14px 16px;
+                font-size: 15px;
+            }
+            
+            .search-btn {
+                padding: 10px 22px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <div class="search-card">
+            <div class="app-title">
+                <h1><i class="bi bi-cloud-sun"></i> Weather App</h1>
+                <p>Get real-time weather information for any city</p>
+            </div>
+            <form method="POST" class="search-form">
+                {% csrf_token %}
+                <input type="text" name="city" class="search-input" placeholder="Enter city name..." required autofocus>
+                <button type="submit" class="search-btn">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </form>
+        </div>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% if weather %}
+        <div class="weather-card">
+            <div class="location-header">
+                <div class="city-name">{{ weather.city }}</div>
+                <div class="country-name">{{ weather.country }}</div>
+            </div>
 
-    <link rel="stylesheet" href="{% static 'weathercss/style.css' %}" />
+            <div class="main-weather">
+                <div class="weather-icon">
+                    <img src="https://openweathermap.org/img/wn/{{ weather.icon }}@4x.png" alt="{{ weather.description }}" style="width: 120px; height: 120px;">
+                </div>
+                <div class="temperature">{{ weather.temperature }}°C</div>
+                <div class="description">{{ weather.description }}</div>
+                <div class="feels-like">Feels like {{ weather.feels_like }}°C</div>
+            </div>
 
-    <title>Document</title>
-  </head>
+            <div class="weather-details">
+                <div class="detail-item">
+                    <div class="detail-label">
+                        <i class="bi bi-droplet-fill"></i> Humidity
+                    </div>
+                    <div class="detail-value">{{ weather.humidity }}%</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">
+                        <i class="bi bi-wind"></i> Wind Speed
+                    </div>
+                    <div class="detail-value">{{ weather.wind_speed }} m/s</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">
+                        <i class="bi bi-speedometer2"></i> Pressure
+                    </div>
+                    <div class="detail-value">{{ weather.pressure }} hPa</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">
+                        <i class="bi bi-cloud-fill"></i> Cloudiness
+                    </div>
+                    <div class="detail-value">{{ weather.clouds }}%</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">
+                        <i class="bi bi-eye-fill"></i> Visibility
+                    </div>
+                    <div class="detail-value">{{ weather.visibility }} km</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">
+                        <i class="bi bi-compass-fill"></i> Wind Direction
+                    </div>
+                    <div class="detail-value">{{ weather.wind_deg }}°</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
-  <body>
-    <div class="container">
-      <h1>🌦️ India Weather App</h1>
-
-      <form method="POST">
-        {% csrf_token %}
-        <input
-          type="text"
-          name="city"
-          placeholder="Enter Indian City"
-          required
-        />
-
-        <button type="submit">Get Weather</button>
-      </form>
-
-      {% if weather %}
-      <div class="weather-box">
-        <h2>{{ weather.city }}</h2>
-
-        <p>🌡 Temperature: {{ weather.temperature }} °C</p>
-
-        <p>☁ Condition: {{ weather.description }}</p>
-
-        <p>💧 Humidity: {{ weather.humidity }}%</p>
-
-        <p>🌬 Wind Speed: {{ weather.wind }} m/s</p>
-      </div>
-
-      {% endif %} {% if error %}
-      <p class="error">{{ error }}</p>
-
-      {% endif %}
+        {% if error %}
+        <div class="error-message">
+            <div class="error-icon">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <p class="error-text">{{ error }}</p>
+        </div>
+        {% endif %}
     </div>
-  </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
