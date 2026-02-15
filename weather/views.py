@@ -1,4 +1,5 @@
 import requests
+import os
 from django.shortcuts import render
 from dotenv import load_dotenv
 load_dotenv()

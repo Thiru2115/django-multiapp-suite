@@ -54,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ROOT_URLCONF = 'multiapps.urls'
 
@@ -146,4 +145,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DATABASE_ROUTERS = ['multiapps.db_router.AppRouter']
