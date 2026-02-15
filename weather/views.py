@@ -1,7 +1,9 @@
 import requests
 from django.shortcuts import render
+from dotenv import load_dotenv
+load_dotenv()
 
-API_KEY = "88d8359c0ecc615aed402d8a8bcfe015"
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")  
 
 def weather_home(request):
     weather = None
@@ -10,7 +12,7 @@ def weather_home(request):
     if request.method == "POST":
         city = request.POST.get("city")
 
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}&units=metric"
         res = requests.get(url).json()
 
         # check API success
