@@ -1,0 +1,76 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Contact | Elite College</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="navbar">
+      <div class="container">
+        <h1 class="logo">Elite<span>College</span></h1>
+        <nav>
+          <ul class="menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'placements' %}">Placements</a></li>
+            <li><a href="{% url 'hostel' %}">Hostel</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section class="contact-section container">
+      <h2>Contact Us</h2>
+
+      <p>
+        Reach out to Elite College for admissions, placements, hostel
+        facilities, or academic inquiries.
+      </p>
+
+      <form method="POST" action="{% url 'contact' %}" class="contact-form">
+        {% csrf_token %}
+
+        <input type="text" name="name" placeholder="Full Name" required />
+
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          maxlength="10"
+          required
+        />
+
+        <input type="email" name="email" placeholder="Email Address" required />
+
+        <textarea
+          name="message"
+          rows="5"
+          placeholder="Your Requirement"
+          required
+        ></textarea>
+
+        <button type="submit" class="btn">Submit</button>
+      </form>
+
+      <p style="margin-top: 25px">
+        📍 Chennai, Tamil Nadu <br />
+        📞 +91 98765 43210 <br />
+        ✉ info@elitecollege.edu
+      </p>
+    </section>
+    {% if messages %}
+    <div class="toast-container">
+      {% for message in messages %}
+      <div class="toast">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <footer class="footer">
+      <p>© 2026 Elite College | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

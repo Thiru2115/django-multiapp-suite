@@ -1,0 +1,51 @@
+{% load static %}
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="{% static 'weathercss/style.css' %}" />
+
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🌦️ India Weather App</h1>
+
+      <form method="POST">
+        {% csrf_token %}
+        <input
+          type="text"
+          name="city"
+          placeholder="Enter Indian City"
+          required
+        />
+
+        <button type="submit">Get Weather</button>
+      </form>
+
+      {% if weather %}
+      <div class="weather-box">
+        <h2>{{ weather.city }}</h2>
+
+        <p>🌡 Temperature: {{ weather.temperature }} °C</p>
+
+        <p>☁ Condition: {{ weather.description }}</p>
+
+        <p>💧 Humidity: {{ weather.humidity }}%</p>
+
+        <p>🌬 Wind Speed: {{ weather.wind }} m/s</p>
+      </div>
+
+      {% endif %} {% if error %}
+      <p class="error">{{ error }}</p>
+
+      {% endif %}
+    </div>
+  </body>
+</html>

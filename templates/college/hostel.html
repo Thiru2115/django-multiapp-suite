@@ -1,0 +1,85 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hostel | Elite College</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="navbar">
+      <div class="container">
+        <h1 class="logo">Elite<span>College</span></h1>
+        <nav>
+          <ul class="menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'placements' %}">Placements</a></li>
+            <li><a href="{% url 'hostel' %}">Hostel</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hostel">
+      <div class="container">
+        <h2>Student Hostel</h2>
+
+        <p>
+          Elite College provides safe and comfortable hostel facilities for both
+          boys and girls within the campus.
+        </p>
+
+        <p>
+          The hostels are designed to offer a homely atmosphere with discipline,
+          security, and modern amenities.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Accommodation</h3>
+            <p>Well-ventilated furnished rooms with study desks</p>
+          </div>
+
+          <div class="card">
+            <h3>Security</h3>
+            <p>24/7 CCTV, wardens, biometric access</p>
+          </div>
+
+          <div class="card">
+            <h3>Facilities</h3>
+            <p>Mess, Wi-Fi, gym, indoor games, medical care</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hostel">
+      <div class="container">
+        <h2>Hostel Facilities</h2>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Rooms</h3>
+            <p>Fully furnished, spacious rooms</p>
+          </div>
+
+          <div class="card">
+            <h3>Security</h3>
+            <p>24/7 CCTV & biometric entry</p>
+          </div>
+
+          <div class="card">
+            <h3>Food & Wi-Fi</h3>
+            <p>Healthy meals & high-speed internet</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>© 2026 Elite College | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>

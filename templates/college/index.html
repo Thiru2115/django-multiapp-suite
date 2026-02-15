@@ -1,0 +1,87 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Elite College</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="navbar">
+      <div class="container">
+        <h1 class="logo">Elite<span>College</span></h1>
+        <nav>
+          <ul class="menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'placements' %}">Placements</a></li>
+            <li><a href="{% url 'hostel' %}">Hostel</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <h2>Shaping Future Leaders</h2>
+        <p>Premium education with career-focused training</p>
+        <a href="{% url 'placements' %}" class="btn">View Placements</a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about container">
+      <h2>About Our College</h2>
+      <p>
+        Elite College delivers world-class education, innovation, and excellent
+        placement opportunities.
+      </p>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery container">
+      <h2>Campus Gallery</h2>
+
+      <div class="gallery-grid">
+        <div class="gallery-card">
+          <img
+            src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=70"
+            alt="Campus Classroom"
+          />
+          <p>Modern Classrooms</p>
+        </div>
+
+        <div class="gallery-card">
+          <img
+            src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b"
+            alt=""
+          />
+          <p>Digital Library</p>
+        </div>
+
+        <div class="gallery-card">
+          <img
+            src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
+            alt=""
+          />
+          <p>Innovation Labs</p>
+        </div>
+
+        <div class="gallery-card">
+          <img
+            src="https://images.unsplash.com/photo-1543269865-cbf427effbad"
+            alt=""
+          />
+          <p>Student Life</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>© 2026 Elite College | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>
