@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compressor & Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #2c3e50;
+            --accent-color: #2ecc71;
+            --background-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 900px;
+            padding: 2.5rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-section {
+            background: #fdfdfd;
+            border: 1px solid #e1e4e8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .form-section:hover {
+            border-color: var(--primary-color);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 0.8rem;
+            background: #fff;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        input[type="file"]:hover {
+            border-color: var(--primary-color);
+            background: #f0f7ff;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .radio-option {
+            position: relative;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-option label {
+            display: block;
+            padding: 1rem;
+            text-align: center;
+            background: #fff;
+            border: 2px solid #e1e4e8;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .radio-option input[type="radio"]:checked + label {
+            border-color: var(--primary-color);
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #357abd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .result-section {
+            margin-top: 3rem;
+            border-top: 2px solid #f1f1f1;
+            padding-top: 2rem;
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .image-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .card-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .btn-download {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 2rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-download:hover {
+            background-color: #27ae60;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+        }
+
+        .error-message {
+            background-color: #fee2e2;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #fecaca;
+        }
+
+        /* Camera Styles */
+        .camera-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: #000;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        video, canvas {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none; /* Added for anchor tags */
+            font-size: 1rem;
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.9;
+        }
+        
+        .content-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 1200px; /* Increase width for 2 cols */
+            }
+            
+            .content-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+                align-items: start;
+            }
+            
+            .result-section {
+                margin-top: 0;
+                border-top: none;
+                border-left: 1px solid #eee;
+                padding-top: 0;
+                padding-left: 2rem;
+                height: 100%;
+            }
+            
+            #process-form {
+                height: 100%;
+            }
+        }
+        
+        .placeholder-result {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #ccc;
+            border: 2px dashed #eee;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            background: #fafafa;
+        }
+        
+        .placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+        
+        .mode-switch {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .mode-btn {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .mode-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Image Processor</h1>
+        <p class="subtitle">Compress, Resize, and Convert Images Instantly</p>
+    </header>
+
+    {% if form.errors %}
+        <div class="error-message">
+            <strong>Error:</strong> Please correct the issues below.
+            {{ form.errors }}
+        </div>
+    {% endif %}
+    
+    <div class="content-grid">
+        <!-- LEFT COLUMN: INPUTS -->
+        <div class="input-column">
+            <div class="mode-switch">
+                <button type="button" class="mode-btn active" id="btn-upload-mode" onclick="switchMode('upload')">Upload File</button>
+                <button type="button" class="mode-btn" id="btn-camera-mode" onclick="switchMode('camera')">Use Camera</button>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" id="process-form">
+                {% csrf_token %}
+                
+                <!-- File Upload Section -->
+                <div class="form-section" id="upload-section">
+                    <label for="{{ form.image.id_for_label }}">1. Upload Image</label>
+                    {{ form.image }}
+                </div>
+
+                <!-- Camera Section -->
+                <div class="form-section hidden" id="camera-section">
+                    <label>1. Capture Image</label>
+                    {{ form.camera_data }}
+                    
+                    <div class="camera-container" id="camera-feed">
+                        <video id="video" autoplay playsinline></video>
+                        <canvas id="canvas" class="hidden"></canvas>
+                        
+                        <div class="camera-controls">
+                            <button type="button" class="btn-secondary" id="start-camera">Start Camera</button>
+                            <button type="button" class="btn-primary hidden" id="capture-btn">Capture</button>
+                            <button type="button" class="btn-secondary hidden" id="retake-btn">Retake</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label>2. Choose Action</label>
+                    <div class="options-grid">
+                        {% for radio in form.action %}
+                            <div class="radio-option">
+                                {{ radio.tag }}
+                                <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label>3. Quality (for Compression)</label>
+                    <div class="options-grid">
+                        {% for option in form.quality %}
+                            <div class="radio-option">
+                                {{ option.tag }}
+                                <label for="{{ option.id_for_label }}">{{ option.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Process Image</button>
+            </form>
+        </div>
+
+        <!-- RIGHT COLUMN: OUTPUTS -->
+        <div class="output-column">
+            {% if processed_image_url %}
+                <div class="result-section">
+                    <h2 style="text-align: center; color: var(--secondary-color); margin-bottom: 2rem;">Processing Complete!</h2>
+                    
+                    <div class="comparison-container" style="display: flex; flex-direction: column; gap: 2rem;">
+                        <div class="image-card">
+                            <div class="card-header">Processed Image</div>
+                            <div class="card-body">
+                                <img src="{{ processed_image_url }}" alt="Processed Image">
+                                <br>
+                                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+                                    <a href="{{ processed_image_url }}" download class="btn-download">
+                                        Download Image
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="image-card">
+                            <div class="card-header">Original Image</div>
+                            <div class="card-body">
+                                <img src="{{ original_image_url }}" alt="Original Image">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <a href="{% url 'process_image' %}" class="btn-secondary" style="text-decoration: none; display: inline-block;">
+                            Start New Process
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="placeholder-result">
+                    <div class="placeholder-icon">🖼️</div>
+                    <h3>No Output Yet</h3>
+                    <p>Upload or capture an image and click "Process" to see the results here.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const startBtn = document.getElementById('start-camera');
+    const captureBtn = document.getElementById('capture-btn');
+    const retakeBtn = document.getElementById('retake-btn');
+    const cameraDataInput = document.getElementById('id_camera_data');
+    const imageInput = document.getElementById('id_image');
+    
+    let stream = null;
+
+    function switchMode(mode) {
+        const uploadSection = document.getElementById('upload-section');
+        const cameraSection = document.getElementById('camera-section');
+        const btnUpload = document.getElementById('btn-upload-mode');
+        const btnCamera = document.getElementById('btn-camera-mode');
+        const cameraFeed = document.getElementById('camera-feed');
+
+        if (mode === 'upload') {
+            uploadSection.classList.remove('hidden');
+            cameraSection.classList.add('hidden');
+            btnUpload.classList.add('active');
+            btnCamera.classList.remove('active');
+            stopCamera();
+            cameraDataInput.value = ''; // Clear camera data
+        } else {
+            uploadSection.classList.add('hidden');
+            cameraSection.classList.remove('hidden');
+            cameraFeed.style.display = 'flex';
+            btnUpload.classList.remove('active');
+            btnCamera.classList.add('active');
+            imageInput.value = ''; // Clear file input
+        }
+    }
+
+    startBtn.addEventListener('click', async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            video.classList.remove('hidden');
+            canvas.classList.add('hidden');
+            startBtn.classList.add('hidden');
+            captureBtn.classList.remove('hidden');
+            retakeBtn.classList.add('hidden');
+        } catch (err) {
+            alert("Error accessing camera: " + err);
+        }
+    });
+
+    captureBtn.addEventListener('click', () => {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        const dataURL = canvas.toDataURL('image/png');
+        cameraDataInput.value = dataURL;
+        
+        video.classList.add('hidden');
+        canvas.classList.remove('hidden');
+        captureBtn.classList.add('hidden');
+        retakeBtn.classList.remove('hidden');
+        
+        // Optional: stop stream after capture to save battery
+        // stopCamera(); 
+    });
+
+    retakeBtn.addEventListener('click', () => {
+        cameraDataInput.value = '';
+        video.classList.remove('hidden');
+        canvas.classList.add('hidden');
+        captureBtn.classList.remove('hidden');
+        retakeBtn.classList.add('hidden');
+        if (!stream || !stream.active) {
+            startBtn.click();
+        }
+    });
+
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+            video.srcObject = null;
+            startBtn.classList.remove('hidden');
+            captureBtn.classList.add('hidden');
+            retakeBtn.classList.add('hidden');
+        }
+    }
+</script>
+
+</body>
+</html>

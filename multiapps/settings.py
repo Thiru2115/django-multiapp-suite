@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'college',
     'weather',
     'notes',
+    'image_processing',
 ]
 
 MIDDLEWARE = [
@@ -153,3 +154,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DATABASE_ROUTERS = ['multiapps.db_router.AppRouter']
+
+# Media settings for image uploads
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
