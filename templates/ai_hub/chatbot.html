@@ -1,0 +1,160 @@
+{% extends 'ai_hub/base.html' %}
+
+{% block title %}AI Chatbot{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 70vh;
+        max-height: 800px;
+    }
+
+    .chat-history {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+        background: rgba(15, 23, 42, 0.3);
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .message {
+        max-width: 80%;
+        padding: 1rem 1.5rem;
+        border-radius: 16px;
+        line-height: 1.5;
+        position: relative;
+    }
+
+    .message.user {
+        align-self: flex-end;
+        background: var(--primary);
+        color: white;
+        border-bottom-right-radius: 4px;
+        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+    }
+
+    .message.ai {
+        align-self: flex-start;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-bottom-left-radius: 4px;
+    }
+
+    .message-icon {
+        position: absolute;
+        bottom: -10px;
+        font-size: 1.2rem;
+        width: 30px;
+        height: 30px;
+        background: var(--bg-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border);
+    }
+
+    .user .message-icon {
+        right: -10px;
+        color: var(--primary);
+    }
+
+    .ai .message-icon {
+        left: -10px;
+        color: var(--success);
+    }
+
+    .chat-input-form {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .chat-input-wrapper {
+        flex-grow: 1;
+        position: relative;
+    }
+
+    .chat-input {
+        padding-right: 3rem;
+        resize: none;
+        height: 60px;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card chat-container">
+    <div class="page-header" style="text-align: left; margin-bottom: 1rem;">
+        <h2 style="font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+            <i class="fa-regular fa-comments" style="color: var(--primary);"></i> AI Chatbot
+        </h2>
+    </div>
+
+    {% if error %}
+        <div class="error-message">
+            <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+        </div>
+    {% endif %}
+
+    <div class="chat-history" id="chatHistory">
+        {% if user_input and not error %}
+            <div class="message user">
+                {{ user_input }}
+                <div class="message-icon"><i class="fa-solid fa-user"></i></div>
+            </div>
+            
+            {% if response %}
+            <div class="message ai">
+                {{ response|linebreaksbr }}
+                <div class="message-icon"><i class="fa-solid fa-robot"></i></div>
+            </div>
+            {% endif %}
+            
+        {% else %}
+            <div class="message ai">
+                Hello! I am an AI assistant powered by Hugging Face open-source models. How can I help you today?
+                <div class="message-icon"><i class="fa-solid fa-robot"></i></div>
+            </div>
+        {% endif %}
+    </div>
+
+    <form method="POST" class="chat-input-form" id="chatForm">
+        {% csrf_token %}
+        <div class="chat-input-wrapper">
+            <textarea name="user_input" class="form-control chat-input" placeholder="Type your message..." required autofocus></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+            <div class="loader" id="loader"></div>
+            <i class="fa-solid fa-paper-plane" id="sendIcon"></i>
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-scroll to bottom of chat
+    const chatHistory = document.getElementById('chatHistory');
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+
+    // Handle form submission UI
+    document.getElementById('chatForm').addEventListener('submit', function() {
+        const btn = document.getElementById('submitBtn');
+        const icon = document.getElementById('sendIcon');
+        const loader = document.getElementById('loader');
+        
+        btn.disabled = true;
+        btn.style.opacity = '0.8';
+        icon.style.display = 'none';
+        loader.style.display = 'inline-block';
+    });
+</script>
+{% endblock %}

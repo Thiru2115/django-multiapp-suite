@@ -37,3 +37,9 @@ htmlcov/
 .DS_Store
 Thumbs.db
 /media
+test_hf.py
+test_hf2.py
+test_hf3.py
+test_hf4.py
+test_hf_sdk.py
+test_out.txt

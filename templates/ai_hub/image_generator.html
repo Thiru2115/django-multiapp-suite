@@ -1,0 +1,139 @@
+{% extends 'ai_hub/base.html' %}
+
+{% block title %}Image Generator{% endblock %}
+
+{% block extra_css %}
+<style>
+    .generator-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .prompt-panel {
+        background: rgba(15, 23, 42, 0.3);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 2rem;
+    }
+
+    .prompt-header {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-main);
+    }
+
+    .image-panel {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .image-result {
+        max-width: 100%;
+        max-height: 600px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        object-fit: contain;
+    }
+
+    .placeholder-content {
+        text-align: center;
+        color: var(--text-muted);
+    }
+
+    .placeholder-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .generator-input {
+        resize: none;
+        height: 100px;
+        margin-bottom: 1rem;
+    }
+
+    .download-btn {
+        margin-top: 1.5rem;
+        display: inline-flex;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="width: 100%;">
+    <div class="page-header" style="text-align: left; margin-bottom: 2rem;">
+        <h2 style="font-size: 2rem; display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary);"></i> AI Image Generator
+        </h2>
+        <p>Describe what you want to see, and AI will create an image for you.</p>
+    </div>
+
+    {% if error %}
+        <div class="error-message">
+            <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+        </div>
+    {% endif %}
+
+    <div class="generator-container">
+        <!-- Input Panel -->
+        <div class="prompt-panel">
+            <div class="prompt-header">
+                <i class="fa-solid fa-pen-nib"></i> Image Prompt
+            </div>
+            <form method="POST" id="generateForm">
+                {% csrf_token %}
+                <textarea name="prompt" class="form-control generator-input" placeholder="A futuristic city with flying cars at sunset, digital art style..." required autofocus>{{ prompt }}</textarea>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <div class="loader" id="loader"></div>
+                    <span id="btnText"><i class="fa-solid fa-image"></i> Generate Image</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="image-panel">
+            {% if image_data %}
+                <img src="{{ image_data }}" alt="AI Generated Image" class="image-result">
+                <a href="{{ image_data }}" download="ai_generated_image.jpg" class="btn btn-outline download-btn">
+                    <i class="fa-solid fa-download"></i> Download Image
+                </a>
+            {% else %}
+                <div class="placeholder-content">
+                    <i class="fa-regular fa-image placeholder-icon"></i>
+                    <h3>Your Image Will Appear Here</h3>
+                    <p style="margin-top: 0.5rem;">Enter a descriptive prompt above to get started.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('generateForm').addEventListener('submit', function() {
+        const btn = document.getElementById('submitBtn');
+        const loader = document.getElementById('loader');
+        const text = document.getElementById('btnText');
+        
+        btn.disabled = true;
+        btn.style.opacity = '0.8';
+        text.style.display = 'none';
+        loader.style.display = 'inline-block';
+    });
+</script>
+{% endblock %}

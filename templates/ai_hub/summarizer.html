@@ -1,0 +1,128 @@
+{% extends 'ai_hub/base.html' %}
+
+{% block title %}Text Summarizer{% endblock %}
+
+{% block extra_css %}
+<style>
+    .summarizer-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: stretch;
+    }
+
+    @media (max-width: 768px) {
+        .summarizer-container {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .panel {
+        background: rgba(15, 23, 42, 0.3);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        min-height: 400px;
+    }
+
+    .panel-header {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-main);
+    }
+
+    .input-area {
+        flex-grow: 1;
+        resize: none;
+        min-height: 300px;
+        margin-bottom: 1.5rem;
+    }
+
+    .result-area {
+        flex-grow: 1;
+        background: var(--bg-color);
+        border-radius: 8px;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        line-height: 1.7;
+        overflow-y: auto;
+    }
+
+    .placeholder-text {
+        color: var(--text-muted);
+        text-align: center;
+        margin-top: 50%;
+        transform: translateY(-50%);
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="width: 100%;">
+    <div class="page-header" style="text-align: left; margin-bottom: 2rem;">
+        <h2 style="font-size: 2rem; display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-compress" style="color: var(--primary);"></i> Text Summarizer
+        </h2>
+        <p>Paste long articles, essays, or documents to get a concise summary.</p>
+    </div>
+
+    {% if error %}
+        <div class="error-message">
+            <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+        </div>
+    {% endif %}
+
+    <div class="summarizer-container">
+        <!-- Input Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <i class="fa-solid fa-file-lines"></i> Original Text
+            </div>
+            <form method="POST" id="summaryForm" style="display: flex; flex-direction: column; flex-grow: 1;">
+                {% csrf_token %}
+                <textarea name="original_text" class="form-control input-area" placeholder="Paste your long text here..." required>{{ original_text }}</textarea>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <div class="loader" id="loader"></div>
+                    <span id="btnText"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Free Summary</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="panel">
+            <div class="panel-header" style="color: var(--success);">
+                <i class="fa-solid fa-file-contract"></i> AI Summary
+            </div>
+            <div class="result-area">
+                {% if summary %}
+                    {{ summary|linebreaksbr }}
+                {% else %}
+                    <div class="placeholder-text">Your summary will appear here.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('summaryForm').addEventListener('submit', function() {
+        const btn = document.getElementById('submitBtn');
+        const loader = document.getElementById('loader');
+        const text = document.getElementById('btnText');
+        
+        btn.disabled = true;
+        btn.style.opacity = '0.8';
+        text.style.display = 'none';
+        loader.style.display = 'inline-block';
+    });
+</script>
+{% endblock %}

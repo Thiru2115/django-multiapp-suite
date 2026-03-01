@@ -26,6 +26,7 @@ urlpatterns = [
     path('notes/',include('notes.urls')),
     path('opencv/', include('image_processing.urls')),
     path('ai/', include('ai_detector.urls')),
+    path('ai-hub/', include('ai_hub.urls')),
 ]
 
 if settings.DEBUG:
