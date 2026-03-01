@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'weather',
     'notes',
     'image_processing',
+    'ai_detector',
 ]
 
 MIDDLEWARE = [

@@ -8,6 +8,7 @@ opencv-python==4.13.0.92
 psycopg2-binary==2.9.11
 python-dotenv==1.2.1
 requests==2.32.5
+Pillow==11.0.0
 sqlparse==0.5.5
 tzdata==2025.3
 urllib3==2.6.3

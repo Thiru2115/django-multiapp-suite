@@ -25,6 +25,7 @@ urlpatterns = [
     path("weather/",include("weather.urls")),
     path('notes/',include('notes.urls')),
     path('opencv/', include('image_processing.urls')),
+    path('ai/', include('ai_detector.urls')),
 ]
 
 if settings.DEBUG:
